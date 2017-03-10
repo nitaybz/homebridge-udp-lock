@@ -1,5 +1,5 @@
-# homebridge-udp-garage
-Control your garage door through UDP packets
+# homebridge-udp-lock
+Control your lock through UDP packets
 
 
 # config.json
@@ -10,8 +10,8 @@ Control your garage door through UDP packets
         "name": "My Garag Door",
         "host": "192.168.0.X",
         "port": 80,
-        "up_payload": "874652395hjui4d98523",
-        "down_payload": "8932y4123545j5k245325",
+        "lock_payload": "874652395hjui4d98523",
+        "unlock_payload": "8932y4123545j5k245325",
 }
 ```
 
@@ -22,8 +22,8 @@ Control your garage door through UDP packets
 | `name`                           | name of the accessory                                   |     ✓    |
 | `host`                           | endpoint for whatever is receiving these requests       |     ✓    |
 | `port`                           | port of destination                                     |     ✓    |
-| `garage_open_payload`            | payload for the open state                              |     ✓    |
-| `garage_close_payload`           | payload for the close state                             |     ✓    |
+| `unlock_payload`                 | payload for the unlock state                            |     ✓    |
+| `lock_payload`                   | payload for the lock state                              |     ✓    |
 
 ## Help
 
@@ -32,5 +32,5 @@ Control your garage door through UDP packets
 ## Installation
 
 1. Install homebridge using: `npm install -g homebridge`
-2. Install this plugin using: `npm install -g homebridge-udp-garage`
+2. Install this plugin using: `npm install -g homebridge-udp-lock`
 3. Update your config file
