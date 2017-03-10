@@ -24,6 +24,7 @@ Control your lock through UDP packets
 | `port`                           | port of destination                                     |     ✓    |
 | `unlock_payload`                 | payload for the unlock state                            |     ✓    |
 | `lock_payload`                   | payload for the lock state                              |     ✓    |
+| `defaultState`                   | default state when restarting (lock/unlock)             |     ✓    |
 
 ## Help
 
