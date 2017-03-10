@@ -5,63 +5,56 @@ module.exports = function(homebridge) {
 	Service = homebridge.hap.Service;
 	Characteristic = homebridge.hap.Characteristic;
 
-	homebridge.registerAccessory("homebridge-udp-garage", "udpGarage", udpGarage);
+	homebridge.registerAccessory("homebridge-udp-lock", "UDPlock", udpLock);
 }
 
-function udpGarage(log, config) {
+function udpLock(log, config) {
 	this.log = log;
 	this.name = config["name"];
 	this.host = config["host"];
-    this.port = config["port"];
-	this.garage_open_payload = config["open_payload"];
-	this.garage_close_payload = config["close_payload"];
-	this.currentState = Characteristic.CurrentDoorState.CLOSED;
+   	this.port = config["port"];
+	this.unlock_payload = config["unlock_payload"];
+	this.lock_payload = config["lock_payload"];
+	this.currentState = (config["defaultState"] == "locked") ? true : false;
+	this.log("locked = " + this.currentState);
+	
+	this.lockservice = new Service.LockMechanism(this.name);
 
-	this.garageservice = new Service.GarageDoorOpener(this.name);
-
-	this.garageservice
-		.getCharacteristic(Characteristic.CurrentDoorState)
+	this.lockservice
+		.getCharacteristic(Characteristic.LockCurrentState)
 		.on('get', this.getState.bind(this));
 
-	this.garageservice
-		.getCharacteristic(Characteristic.TargetDoorState)
+	this.lockservice
+		.getCharacteristic(Characteristic.LockTargetState)
 		.on('get', this.getState.bind(this))
 		.on('set', this.setState.bind(this));
-
-	this.garageservice
-		.getCharacteristic(Characteristic.ObstructionDetected)
-		.on('get', this.getStateObstruction.bind(this));
-
 }
 
-
-udpGarage.prototype.getStateObstruction = function(callback) {
-	callback(null, false); // no obstruction
-}
-
-
-udpGarage.prototype.getState = function(callback) {
-	this.log("current state");
+udpLock.prototype.getState = function(callback) {
+	this.log("current lock state is " + this.currentState);
 	callback(null, this.currentState);	
 
 }
 
-udpGarage.prototype.setState = function(state, callback) {
-	var doorState = (state == Characteristic.TargetDoorState.CLOSED) ? "closed" : "open";
-	this.log("Set state to ", doorState);
+udpLock.prototype.setState = function(state, callback) {
+	var lockState = (state == Characteristic.LockTargetState.SECURED) ? "lock" : "unlock";
+	this.log("Set state to ", lockState);
 
-	this.service
-        .setCharacteristic(Characteristic.PositionState, (moveUp ? 1 : 0));
-
-    this.udpRequest(this.host, this.port, (doorState == "closed" ? this.garage_close_payload : this.garage_open_payload), function() {
-        this.log("Success ", (doorState == "closed" ? "closing" : "opening"))
-		var currentState = (state == Characteristic.TargetDoorState.CLOSED) ? Characteristic.CurrentDoorState.CLOSED : Characteristic.CurrentDoorState.OPEN;
-        this.garageservice
-				.setCharacteristic(Characteristic.CurrentDoorState, currentState);
-				callback(null); // success
-    }.bind(this));
+   	this.udpRequest(this.host, this.port, (lockState == "lock" ? this.lock_payload : this.unlock_payload), function() {
+		this.log("Success ", (lockState == "lock" ? "locking" : "unlocking"))
+			this.currentState = (state == Characteristic.LockTargetState.SECURED) ? Characteristic.LockCurrentState.SECURED : Characteristic.LockCurrentState.UNSECURED;
+		this.garageservice
+			.setCharacteristic(Characteristic.LockCurrentState, this.currentState);
+			callback(null); // success
+    	}.bind(this));
 },
 
-udpGarage.prototype.getServices = function() {
-	return [this.garageservice];
+udpLock.prototype.udpRequest = function(host, port, payload, callback) {
+        udp(host, port, payload, function (err) {
+            callback(err);
+        });
+    },	
+
+udpLock.prototype.getServices = function() {
+	return [this.lockservice];
 }
