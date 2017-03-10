@@ -1,19 +1,19 @@
 {
-  "name": "homebridge-udp-garage",
+  "name": "homebridge-udp-lock",
   "version": "1.0.0",
   "author": "nitaybz",
-  "description": "A Homebridge plugin to control Garage Door trough UDP packets",
+  "description": "A Homebridge plugin to control lock trough UDP packets",
   "license": "MIT",
-  "homepage": "https://github.com/nitaybz/homebridge-udp-garage#readme",
+  "homepage": "https://github.com/nitaybz/homebridge-udp-lock#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nitaybz/homebridge-udp-garage.git"
+    "url": "git+https://github.com/nitaybz/homebridge-udp-lock.git"
   },
   "keywords": [
     "homebridge-plugin",
-    "homebridge-garage",
+    "homebridge-lock",
     "homebridge",
-    "blinds",
+    "lock",
     "udp"
   ],
   "main": "index.js",
@@ -23,6 +23,6 @@
   },
   "dependencies": {},
   "bugs": {
-    "url": "https://github.com/nitaybz/homebridge-udp-garage/issues"
+    "url": "https://github.com/nitaybz/homebridge-udp-lock/issues"
   }
 }
