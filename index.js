@@ -15,7 +15,7 @@ function udpLock(log, config) {
    	this.port = config["port"];
 	this.unlock_payload = config["unlock_payload"];
 	this.lock_payload = config["lock_payload"];
-	this.currentState = (config["defaultState"] == "locked") ? true : false;
+	this.currentState = (config["defaultState"] == "lock") ? true : false;
 	this.log("locked = " + this.currentState);
 	
 	this.lockservice = new Service.LockMechanism(this.name);
