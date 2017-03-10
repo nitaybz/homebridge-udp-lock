@@ -6,8 +6,8 @@ Control your lock through UDP packets
 
 ```
 {
-        "accessory": "garageDoor",
-        "name": "My Garag Door",
+        "accessory": "UDPlock",
+        "name": "My Lock",
         "host": "192.168.0.X",
         "port": 80,
         "lock_payload": "874652395hjui4d98523",
