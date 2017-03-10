@@ -43,7 +43,7 @@ udpLock.prototype.setState = function(state, callback) {
    	this.udpRequest(this.host, this.port, (lockState == "lock" ? this.lock_payload : this.unlock_payload), function() {
 		this.log("Success ", (lockState == "lock" ? "locking" : "unlocking"))
 			this.currentState = (state == Characteristic.LockTargetState.SECURED) ? Characteristic.LockCurrentState.SECURED : Characteristic.LockCurrentState.UNSECURED;
-		this.garageservice
+		this.lockservice
 			.setCharacteristic(Characteristic.LockCurrentState, this.currentState);
 			callback(null); // success
     	}.bind(this));
